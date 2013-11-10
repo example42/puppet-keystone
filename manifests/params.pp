@@ -5,11 +5,13 @@
 class keystone::params {
 
   $package_name = $::osfamily ? {
-    default => 'keystone',
+    'Redhat' => 'openstack-keystone',
+    default  => 'keystone',
   }
 
   $service_name = $::osfamily ? {
-    default => 'keystone',
+    'Redhat' => 'openstack-keystone',
+    default  => 'keystone',
   }
 
   $config_file_path = $::osfamily ? {
@@ -21,11 +23,11 @@ class keystone::params {
   }
 
   $config_file_owner = $::osfamily ? {
-    default => 'root',
+    default => 'keystone',
   }
 
   $config_file_group = $::osfamily ? {
-    default => 'root',
+    default => 'keystone',
   }
 
   $config_dir_path = $::osfamily ? {
