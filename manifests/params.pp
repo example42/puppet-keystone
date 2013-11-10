@@ -4,6 +4,10 @@
 #
 class keystone::params {
 
+  $extra_package_name = $::osfamily ? {
+    default  => 'python-keystone',
+  }
+
   $package_name = $::osfamily ? {
     'Redhat' => 'openstack-keystone',
     default  => 'keystone',

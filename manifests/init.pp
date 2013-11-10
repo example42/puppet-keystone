@@ -11,6 +11,8 @@
 #
 class keystone (
 
+  $extra_package_name        = $keystone::params::extra_package_name,
+
   $package_name              = $keystone::params::package_name,
   $package_ensure            = 'present',
 
@@ -83,6 +85,12 @@ class keystone (
 
   if $keystone::package_name {
     package { $keystone::package_name:
+      ensure   => $keystone::package_ensure,
+    }
+  }
+
+  if $keystone::extra_package_name {
+    package { $keystone::extra_package_name:
       ensure   => $keystone::package_ensure,
     }
   }

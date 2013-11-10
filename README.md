@@ -105,6 +105,13 @@ The module provides also a generic define to manage any keystone configuration f
         }
 
 
+* Install extra packages (clients, plugins...). Can be an array. Default: client package.
+
+        class { 'keystone':
+          extra_package_name    => [ 'python-keystone' , 'python-keystoneclient' ],
+        }
+
+
 * Use the additional example42 subclass for puppi extensions
 
         class { 'keystone':

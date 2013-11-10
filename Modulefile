@@ -1,5 +1,5 @@
 name          'example42-keystone'
-version       '3.0.0-alpha1'
+version       '3.0.0-alpha2'
 source        'https://github.com/example42/puppet-keystone'
 author        'Alessandro Franceschi'
 license       'Apache License, Version 2.0'
