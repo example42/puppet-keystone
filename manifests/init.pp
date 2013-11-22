@@ -143,7 +143,7 @@ class keystone (
   if $keystone::monitor_class {
     class { $keystone::monitor_class:
       options_hash => $keystone::monitor_options_hash,
-      scope_hash   => {}, # TODO: Find a good way to inject class' scope
+      scope_hash   => {}, # TODO: Find a good way to inject class' scope
     }
   }
 
