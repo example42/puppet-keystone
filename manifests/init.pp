@@ -11,7 +11,8 @@
 #
 class keystone (
 
-  $extra_package_name        = $keystone::params::extra_package_name,
+  $conf_hash                 = undef,
+  $generic_service_hash      = undef,
 
   $package_name              = $keystone::params::package_name,
   $package_ensure            = 'present',
@@ -23,7 +24,7 @@ class keystone (
   $config_file_path          = $keystone::params::config_file_path,
   $config_file_replace       = $keystone::params::config_file_replace,
   $config_file_require       = 'Package[keystone]',
-  $config_file_notify        = 'Service[keystone]',
+  $config_file_notify        = 'class_default',
   $config_file_source        = undef,
   $config_file_template      = undef,
   $config_file_content       = undef,
@@ -66,7 +67,11 @@ class keystone (
 
   $manage_config_file_content = default_content($config_file_content, $config_file_template)
 
-  $manage_config_file_notify = pickx($config_file_notify)
+  $manage_config_file_notify  = $config_file_notify ? {
+    'class_default' => 'Service[keystone]',
+    ''              => undef,
+    default         => $config_file_notify,
+  }
 
   if $package_ensure == 'absent' {
     $manage_service_enable = undef
@@ -84,21 +89,9 @@ class keystone (
   # Resources managed
 
   if $keystone::package_name {
-    package { $keystone::package_name:
+    package { 'keystone':
       ensure   => $keystone::package_ensure,
-    }
-  }
-
-  if $keystone::extra_package_name {
-    package { $keystone::extra_package_name:
-      ensure   => $keystone::package_ensure,
-    }
-  }
-
-  if $keystone::service_name {
-    service { $keystone::service_name:
-      ensure     => $keystone::manage_service_ensure,
-      enable     => $keystone::manage_service_enable,
+      name     => $keystone::package_name,
     }
   }
 
@@ -124,13 +117,29 @@ class keystone (
       recurse => $keystone::config_dir_recurse,
       purge   => $keystone::config_dir_purge,
       force   => $keystone::config_dir_purge,
-      notify  => $keystone::config_file_notify,
+      notify  => $keystone::manage_config_file_notify,
       require => $keystone::config_file_require,
+    }
+  }
+
+  if $keystone::service_name {
+    service { 'keystone':
+      ensure     => $keystone::manage_service_ensure,
+      name       => $keystone::service_name,
+      enable     => $keystone::manage_service_enable,
     }
   }
 
 
   # Extra classes
+  if $conf_hash {
+    create_resources('keystone::conf', $conf_hash)
+  }
+
+  if $generic_service_hash {
+    create_resources('keystone::generic_service', $generic_service_hash)
+  }
+
 
   if $keystone::dependency_class {
     include $keystone::dependency_class

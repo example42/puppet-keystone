@@ -1,0 +1,8 @@
+---
+package_name: 'keystone'
+service_name: 'keystone'
+config_file_path:  '/etc/keystone/keystone.conf'
+config_file_mode: '0644'
+config_file_owner: 'root'
+config_file_group: 'root'
+config_dir_path: '/etc/keystone'
