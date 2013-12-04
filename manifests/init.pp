@@ -29,6 +29,9 @@ class keystone (
   $config_file_template      = undef,
   $config_file_content       = undef,
   $config_file_options_hash  = undef,
+  $config_file_owner         = $keystone::params::config_file_owner,
+  $config_file_group         = $keystone::params::config_file_group,
+  $config_file_mode          = $keystone::params::config_file_mode,
 
   $config_dir_path           = $keystone::params::config_dir_path,
   $config_dir_source         = undef,
@@ -60,10 +63,6 @@ class keystone (
   if $config_file_options_hash { validate_hash($config_file_options_hash) }
   if $monitor_options_hash { validate_hash($monitor_options_hash) }
   if $firewall_options_hash { validate_hash($firewall_options_hash) }
-
-  $config_file_owner          = $keystone::params::config_file_owner
-  $config_file_group          = $keystone::params::config_file_group
-  $config_file_mode           = $keystone::params::config_file_mode
 
   $manage_config_file_content = default_content($config_file_content, $config_file_template)
 
