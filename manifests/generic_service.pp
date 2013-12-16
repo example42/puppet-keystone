@@ -42,18 +42,24 @@ define keystone::generic_service (
     'default'       => "Package[${name}]",
     default         => $config_file_require,
   }
+
   if $package_ensure == 'absent' {
     $manage_service_enable = undef
     $manage_service_ensure = stopped
     $config_file_ensure = absent
   } else {
-    $manage_service_enable = $service_enable
-    $manage_service_ensure = $service_ensure
+    $manage_service_enable = $service_enable ? {
+      ''      => undef,
+      'undef' => undef,
+      default => $service_enable,
+    }
+    $manage_service_ensure = $service_ensure ? {
+      ''      => undef,
+      'undef' => undef,
+      default => $service_ensure,
+    }
     $config_file_ensure = present
   }
-
-
-
 
   if ($manage_package_name) {
     package { $name:
